@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>活动名字</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static "css/BackGroundImgCarousel.css" %}">
+</head>
+<body>
+    <div class="container">
+        <div class="form row" >
+           
+            <div class="form-horizontal col-md-offset-3" id="sport_form">                
+                <div class="row">
+                  <div class="col-xs-12 col-md-9"><h3 class="form-title">活动名字</h3></div>
+                </div>
+                <div class="col-xs-12 col-md-9">
+                    <form id="form_data" action="/insertsport" method="post">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <input  class="form-control required" type="text" placeholder="姓名" id="Username" name="Username" autofocus="autofocus" maxlength="20" onfocus="javascript:this.value=''"/>
+                    </div>
+                    <div class="form-group">
+                         <button type="button" id="checkdepat" class="btn btn-success" onclick="return checkName()">
+                            查看部门
+                        </button>
+                    </div>
+                    </form>
+                    <form id="form_data" action="/insertsport" method="post">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <input class="form-control required" type="text" placeholder="身份证" id="IDcard" name="IDcard" autofocus="autofocus" maxlength="18" onfocus="javascript:this.value=''"/>
+                    </div>
+                    <div class="form-group">
+                        <input  class="form-control required" type="text" placeholder="邮箱" id="Email" name="Email" autofocus="autofocus" maxlength="20" onfocus="javascript:this.value=''"/>
+                    </div>
+                    <div class="form-group">
+                        <input  class="form-control required" type="text" placeholder="电话" id="Phone" name="Phone" autofocus="autofocus" maxlength="11" onfocus="javascript:this.value=''"/>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control required" type="text" placeholder="OA账户" id="OAccount" name="OAccount" autofocus="autofocus" maxlength="20" onfocus="javascript:this.value=''"/>
+                    </div>
+                    {% for staff in staff_lists %}
+                        <span id='result'>
+                        {{staff.staffname}} 
+                    {% endfor %}
+                    <!--根据姓名循环读取数据库员工信息 包括序号、签合同主体单位、部门、性别等。
+                    <div class="form-group">
+                        <input class="form-control required" type="text" placeholder="OA账户" id="OAccount" name="OAccount" autofocus="autofocus" maxlength="20" onfocus="javascript:this.value=''"/>
+                    </div>
+                    
+           
+                    <div class="form-group col-md-offset-9">
+                        <button   type=submit class="btn btn-success" onclick="return checkform()" data-toggle="modal" data-target="#myModal" >提交
+                        </button>
+                    </div>
+                    -->
+                    <div class="form-group col-md-offset-9">
+                        <button type="button"  class="btn btn-success" onclick="return checkform()">
+                            提交
+                        </button>
+                    </div>
+                    <!-- 模态框（Modal） -->
+                    <div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="ConfirmModalLabel">
+                                        确认信息
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="col-xs-12 col-md-12">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-md-2"><b>姓&nbsp;&nbsp;名:</b></div>
+                                                <div class="col-xs-6 col-md-8">
+                                                    <input type="text" name="UsernameM" id="UsernameM"  autofocus="autofocus" size="18"  />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6 col-md-2"><b>身份证:</b></div>
+                                                <div class="col-xs-6 col-md-8">
+                                                    <input  type="text" name="IDcardM" id="IDcardM" autofocus="autofocus" size="18"   />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6 col-md-2"><b>邮&nbsp;&nbsp;箱:</b></div>
+                                                <div class="col-xs-6 col-md-8">
+                                                    <input  type="text" name="EmailM" id="EmailM" autofocus="autofocus" size="18"  />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6 col-md-2"><b>电&nbsp;&nbsp;话:</b></div>
+                                                <div class="col-xs-6 col-md-8"> 
+                                                    <input  type="text" name="PhoneM" id="PhoneM" autofocus="autofocus" size="18"  />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6 col-md-2"><b>O&nbsp;&nbsp;A:</b></div>
+                                                <div class="col-xs-6 col-md-8">
+                                                    <input  type="text" name="OAccountM" id="OAccountM" autofocus="autofocus" size="18" />
+                                                </div>
+                                            </div>    
+                                        </div>                                        
+                                    </div>  
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">返回修改
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        提交
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                     </div>
+                    <script type="text/javascript"> 
+                    function checkName(){ 
+                        var v_username = document.getElementById('Username');
+                        if(v_username.value.length==0){    
+                            alert('姓名输入为空！无法检测。');
+                            v_username.focus();
+                            return false;
+                        }
+                        if(v_username.value=="姓名"){    
+                            alert('姓名输入为空！无法检测。');
+                            v_username.focus();
+                            return false;
+                        }
+                        var iusername = document.getElementById('Username').value; 
+                        //alert(iusername);
+                        $.get("/checkdepartment/",{'iusername':iusername}, function(ret){ 
+                            alert(ret)
+                            $('#result').html(ret) 
+                        })
+                        var AdResultArray=new Array();
+              var curIndex=0; 
+              var timeInterval1=3000; //时间间隔,单位毫秒 
+              var arry_i =0; 
+              function update(id) {  
+                  $.getJSON("/RecommendAD/" + id + "/",function(ret) {  
+                      //$("#RecommendAD_id").text(new Date().toString());
+                      for (var i = ret.length - 1; i >= 0; i--) {
+                          //alert(i);
+                          AdResultArray[arry_i]=ret[i].toString(); 
+                          //alert("s "+ AdResultArray[arry_i]);
+                          arry_i++;
+                      };                    
+                  });  
+              } 
+              setTimeout("changeImg()",timeInterval1); 
+             // setInterval(changeImg,timeInterval1); 
+              function changeImg() { 
+                  var obj_imp=document.getElementById("RecommendAD_imp"); 
+                  var obj_link=document.getElementById("RecommendAD_link"); 
+                   
+                  if (curIndex==AdResultArray.length-1) {
+                      curIndex=0;
+                  } 
+                  else { 
+                    curIndex+=1;
+                  } 
+                  obj_link.href=AdResultArray[curIndex].split(",")[0];
+                  obj_imp.src=AdResultArray[curIndex].split(",")[1]; 
+                  //1为图片，0是链接，与RecommendAD(values_list("coupon_short_link","commodity_imp"有关
+              }
+              $(document).ready(function() {  
+                update({{commodity.commodity_id}}); 
+              })  
+              <div class="col-sm-6 col-md-4 col-center-block">
+    <div class="thumbnail">
+     <a id="RecommendAD_link" href ="" target="_blank">
+       <img id="RecommendAD_imp" src ="广告" /> 
+       </a>
+    </div>
+  </div> 
+                
+                        //alert(document.getElementById('Username').value);
+
+                       
+                    }   
+                    function checkform(){ 
+                        var v_username = document.getElementById('Username');
+                        var v_idcard = document.getElementById('IDcard');
+                        var v_email = document.getElementById('Email');
+                        var v_phone = document.getElementById('Phone');
+                        var v_oaccount= document.getElementById('OAccount');
+
+                        if(v_username.value.length==0){    
+                            alert('姓名输入为空！');
+                            v_username.focus();
+                            return false;
+                        }
+                        if(v_username.value=="姓名"){    
+                            alert('姓名输入为空！');
+                            v_username.focus();
+                            return false;
+                        }
+
+                        if(v_idcard.value.length==0){    
+                            alert('身份证输入为空！');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        if(v_idcard.value=="身份证"){    
+                            alert('身份证输入为空！');
+                            v_idcard.focus();
+                            return false;
+                        }
+
+                        if(v_idcard.value=="身份证"){    
+                            alert('身份证输入为空！');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        var IDcard =v_idcard.value
+                         // 1 "验证通过!", 0 //校验不通过
+                        var format = /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/;
+                        //号码规则校验
+                        if(!format.test(IDcard)){
+                            alert('身份证校验码不合规，重新输入');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        //区位码校验
+                        //出生年月日校验   前正则限制起始年份为1900;
+                        var year = IDcard.substr(6,4),//身份证年
+                            month = IDcard.substr(10,2),//身份证月
+                            date = IDcard.substr(12,2),//身份证日
+                            time = Date.parse(month+'-'+date+'-'+year),//身份证日期时间戳date
+                            now_time = Date.parse(new Date()),//当前时间戳
+                            dates = (new Date(year,month,0)).getDate();//身份证当月天数
+                        if(time>now_time||date>dates){
+                            alert('身份证校验码不合规，重新输入');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        //校验码判断
+                        var c = new Array(7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2);   //系数
+                        var b = new Array('1','0','X','9','8','7','6','5','4','3','2');  //校验码对照表
+                        var id_array = IDcard.split("");
+                        var sum = 0;
+                        for(var k=0;k<17;k++){
+                            sum+=parseInt(id_array[k])*parseInt(c[k]);
+                        }
+                        if(id_array[17].toUpperCase() != b[sum%11].toUpperCase()){
+                            alert('身份证校验码不合规，重新输入');
+                            v_idcard.focus();
+                            return false;
+
+                        }
+
+                        if(v_email.value.length==0){    
+                            alert('邮箱输入为空！');
+                            v_email.focus();
+                            return false;
+                        }
+                        if(v_email.value=="邮箱"){    
+                            alert('邮箱输入为空！');
+                            v_email.focus();
+                            return false;
+                        }
+
+                        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+                        var obj = document.getElementById("Email"); //要验证的对象
+                    　　　if(!reg.test(obj.value)){ //正则验证不通过，格式不对
+                    　　　　alert("请输入正确的邮箱！!");
+                    　　　　return false;
+                    　　　}
+                        if(v_phone.value.length==0){    
+                            alert('电话输入为空！');
+                            v_phone.focus();
+                            return false;
+                        }
+                        var phone = v_phone.value;
+                        if(!(/^1[34578]\d{9}$/.test(phone))){
+                            alert('请输入正确的手机号！');
+                            v_phone.focus();
+                            return false;
+                        }
+                        if(v_phone.value=="电话"){    
+                            alert('电话输入为空！');
+                            v_phone.focus();
+                            return false;
+                        }
+
+                        if(v_oaccount.value.length==0){    
+                            alert('OA账户输入为空！');
+                            v_oaccount.focus();
+                            return false;
+                        }
+                        if(v_oaccount.value=="OA账户"){    
+                            alert('OA账户输入为空！');
+                            v_oaccount.focus();
+                            return false;
+                        }
+                        else{
+                            $('#ConfirmModal').modal({ 
+                                keyboard: false
+                            })
+                                
+                            $('#UsernameM').val(v_username.value); 
+                            $('#IDcardM').val(v_idcard.value); 
+                            $('#EmailM').val(v_email.value); 
+                            $('#PhoneM').val(v_phone.value); 
+                            $('#OAccountM').val(v_oaccount.value); 
+
+                            if (sex == '女') {                                     
+                                document.getElementById('women').checked = true;  
+                            } else {  
+                                document.getElementById('man').checked = true;  
+                            }  
+                            $('#update').modal('show'); 
+
+
+                             return false;
+                        }
+                    }
+                   // $('form').submit(function() {
+                       // $('form').submit(function() {
+                     //alert($(this).serialize());
+                     // alert("sdfadsf");
+                     // window.location.href="http://www.baidu.com"
+                      //return false;
+                    //  return true;
+                  //  });
+                    </script>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

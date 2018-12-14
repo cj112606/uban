@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>导出活动名单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static "css/BackGroundImgCarousel.css" %}">
+</head>
+<body>
+    <div class="container">   
+        <div class="form row" > 
+            <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+            <div class="form-horizontal" id="sport_form"> 
+                <div class="row"> 
+                   <h3 class="text-center">导出活动名单</h3>
+                    <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                    <form id="form_data_dept" action="/insearchsports" method="post">
+                         {% csrf_token %}
+                        <div class="form-horizontal col-md-12 text-center">
+                            <input type="text" class="form-control" placeholder="查找活动" aria-describedby="basic-addon1" name ='q'>
+                            <button type="submit" class="btn btn-success " onclick="return checkform()">
+                                查找活动
+                            </button>                             
+                        </div>
+                    </form>
+
+                    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="80%" color=#987cb9 SIZE=3>
+                    <form id="form_data_dept" action="/inexpsportinfo/" method="post">
+                    {% csrf_token %} 
+                    <div class="form-horizontal col-md-12">
+                         
+                        {% if sport_lists %}    
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>活动标题</th>
+                                    <th>活动链接</th>
+                                    <th>发布时间</th>
+                                </tr>
+                            </thead>
+                         {% endif %}    
+                        {% for sport in sport_lists %}                       
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="{{sport.sportnumber}}" name="search_sports_list" value="{{sport.sportnumber}}"> {{sport.sportnumber}}
+                                </td>
+                                <td><p>{{sport.sportname}}</p></td>
+                                <td>
+                                    <a href="/injoinsport/{{sport.sportlink}}/">报名链接</a>
+                                </td>
+                                <td><p> {{sport.updatetime|date:"Y-m-d H:i:s"}}</p></td>
+                            </tr> 
+                            </tbody>    
+                        {% endfor %} 
+                        </table> 
+                    </div>
+
+                    <div class="form-horizontal col-md-12"> 
+                         <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="all_deptments" name="check_box_list"  value="all"> 所有部门
+                        </label>
+                        <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                        {% for deptment in deptmentlists %}    
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="{{deptment.deptmentnumber}}"  name="check_box_list" value="{{deptment.deptmentnumber}}"> {{deptment.deptmentname}}
+                        </label>
+                        {% endfor %}                       
+                    </div>                    
+                    <br>
+                    <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                    <div class="form-group text-center">
+                        <button type="submit"  class="btn btn-success" onclick="return expdept()">
+                            生成文件
+                        </button>
+                    </div>
+                    <div class="form-horizontal col-md-12"> 
+                        {% if succlist %}    
+                        <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>                        
+                        <div class="form-group text-center">
+                            <p clase="text-center"><b>{{succlist}}</b></p>
+                        </div>    
+                        {% endif %}    
+                        {% for download_file in download_file_lists %}
+                        <div class="form-group text-center">
+                            <a href="/indownload_file/{{download_file}}">下载文件: {{download_file}}</a>
+                        </div>    
+                        {% endfor %}                                           
+                    </div>
+                    </form>
+                    <script type="text/javascript" language="javascript">  
+                        function expdept(){ 
+                            //alert(document.getElementById('all_deptments').value);
+                        }
+                    </script>                     
+                      
+                </div>                  
+            </div> 
+            <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+            
+        </div>
+    </div>
+</body>
+</html>

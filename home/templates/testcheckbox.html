@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script>
+    function oneChoice(){
+        var obj = $('[name="checks"]');
+        check_val = [];
+        alert(obj);
+        for(k in obj){
+            if(obj[k].checked && obj[k].value != "0"){
+                check_val.push(obj[k].value);
+            }
+            alert(obj[k].value );
+        }
+        $("#sampling").val(check_val);
+    } 
+
+ 
+</script> 
+</head>
+
+<body>
+<table id="sampling">
+  <tr><td><input type="checkbox" value="0" onclick="allChoice()" id="allCheck" name="checks"> 全选</td></tr>
+  <tr><td></td></tr>
+  <tr><td><input type="checkbox" value="三级报警" name="checks" onclick="oneChoice()"> 三级报警</td></tr>
+  <tr><td></td></tr>
+  <tr><td><input type="checkbox" value="二级报警" name="checks" onclick="oneChoice()"> 二级报警</td></tr>
+  <tr><td></td></tr>
+  <tr><td><input type="checkbox" value="一级报警" name="checks" onclick="oneChoice()"> 一级报警</td></tr>
+  <tr><td></td></tr>
+  <tr><td><input type="checkbox" value="车辆定位" name="checks" onclick="oneChoice()"> 车辆定位</td></tr>
+  <tr><td></td></tr>
+  <tr><td><input type="checkbox" value="车辆状态" name="checks" onclick="oneChoice()"> 车辆状态</td></tr>
+  <tr><td></td></tr>
+  <tr><td><input type="checkbox" value="车辆状况" name="checks" onclick="oneChoice()"> 车辆状况</td></tr>
+</table> 
+</body>
+</html>

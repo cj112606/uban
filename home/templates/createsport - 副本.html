@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>活动名字</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    <link rel="stylesheet" href="{% static "css/BackGroundImgCarousel.css" %}">
+    <link href="{% static "css/bootstrap-datetimepicker.min.css" %}" rel="stylesheet" media="screen"> 
+ 
+    <script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.js" %}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{% static "js/locales/bootstrap-datetimepicker.zh-CN.js" %}" charset="UTF-8"></script> 
+</head>
+<body>
+    <div class="container">
+        <form id="form_data_sports" action="/increatesport/" method="post">
+              {% csrf_token %} 
+            <div class="row">
+                {% if successfullist %}
+                <div class="row"></div>
+                <div class="checkbox"></div> 
+                <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="100%" color=#987cb9 SIZE=1>
+                <div class="col-xs-12 col-md-12 text-center"> 
+                    <b>{{successfullist}}</b>
+                    <div class="row"></div>
+                    <div class="checkbox"></div> 
+                    链接为：<a href="/injoinsport/{{i_sportlink}}/">{{i_sportname}}</a> 
+                </div>
+                {% endif %}
+                <div class="row"></div>
+                <div class="checkbox "></div>
+                <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)"width="90%" color=#987cb9 SIZE=1> 
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 text-center"> 
+                        <label>活动标题</label>
+                        <input type="text" class="form-control" id="Sportname" name="Sportname" value="{{i_sportname}}"/> 
+                    </div>
+                </div>
+                <div class="row"></div>
+                <div class="checkbox"></div>
+                <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <textarea class="form-control" rows="5" id="Sportcontent" name="Sportcontent" value="{{i_sportcontent}}">活动内容</textarea>
+                    </div>
+                </div>
+                <div class="row"></div>
+                <div class="checkbox"></div> 
+                <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3> 
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <div class="input-group date form_date " data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd"> 
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    <input class="form-control" id="sportstarttime" type="text" value="活动开始时间" readonly name="sportstarttime"> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-group">
+                                <div class="input-group date form_date2 " data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd"> 
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    <input class="form-control"  id="sportendtime" type="text" value="活动结束时间" readonly name="sportendtime"> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-group">
+                                    <input class="form-control" name="sporttype" type="text" value="活动类型">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                        <p class="text-center"><b>选择需要员工提供的信息</b></p>
+                       
+                        <div class="col-xs-12 col-md-12 text-center">
+                            <p class="text-center"><b>默认选项</b></p> 
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="Staffdept" name="Staffdept" value="部门" checked disabled="disabled" > 部门
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="Staffunit" name="Staffunit" value="单位" checked disabled="disabled" > 单位
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="Staffsex" name="Staffsex" value="性别" checked disabled="disabled" > 性别
+                            </label>
+                        </div>
+                        <div class="row"></div>
+                        <div class="checkbox"></div> 
+                        <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                        <div class="col-xs-12 col-md-12 text-center">
+                            <p class="text-center"><b>额外选项</b></p> 
+                            {% for requestinfo in requestlists %}    
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="{{requestinfo.requestnumber}}" name="check_box_list" value="{{requestinfo.requestnumber}}" > {{requestinfo.requestname}}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div class="row"></div>
+                        <div class="checkbox"></div> 
+                        <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="60%" color=#987cb9 SIZE=1>
+                        <form id="addrequestattr" method="post" action="/inaddrequestattr/">
+                            {% csrf_token %}  
+                            <div class="col-xs-12 col-md-12 text-center">
+                                <div class="col-xs-8 col-md-8 ">
+                                 <input type="text" id="Staffattr" name="Staffattr" value=""/>
+                                </div>                                                      
+                                <div class="col-xs-2 col-md-2 text-left">
+                                    <input type="button" onclick="jsaddrequestattr()" value="新增额外属性">
+                                </div>  
+                                {{successattrtname}}         
+                            </div>
+                        </form>  
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="form-group text-center">
+                            <button type="submit" id="checkdepat" class="btn btn-success" onclick="return checksport()">
+                                提交活动
+                            </button>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+        </form>  
+        </div>
+            <script type="text/javascript"> 
+                $('.form_date').datetimepicker({
+                        language:  'zh-CN',
+                        weekStart: 1,
+                        todayBtn:  1,
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                });
+                $('.form_date2').datetimepicker({
+                    language:  'zh-CN',
+                    weekStart: 1,
+                    todayBtn:  1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+                });
+                function jsaddrequestattr(){ 
+                    //alert("v_staffattr1");
+                    //inaddrequestattr                                 
+                    var v_staffattr = document.getElementById('Staffattr').value; 
+                    var attrResultArray=new Array();
+                    var arry_i =0; 
+                    //alert("v_staffattr2");                 
+                    //alert(v_staffattr);
+                    $.getJSON("/inaddrequestattr/", {staffattr: v_staffattr},function(ret) { 
+                       // alert("属性添加成功");                                   
+                        if (ret.length > 1) {
+                            //alert("属性："+ v_staffattr +" 添加成功");
+                            /*
+                            for (var i = ret.length - 1; i >= 0; i--){
+                                //alert(ret);
+                                attrResultArray[arry_i]=ret[i].toString(); 
+                                alert(ret);
+                                //alert(ret.length - 1);
+                                //alert(attrResultArray[arry_i].split(",")[1]);
+                                alert(arry_i);
+                                alert(document.getElementById((attrResultArray[arry_i].split(",")[0])).value);                        
+                                //$("#(attrResultArray[i].split(",")[0])").text(属性添加成功);  
+                                arry_i++;
+                            };
+                            */
+                            //document.getElementById(ret.length).checked=true;
+                            alert("属性："+ v_staffattr +" 添加成功,需要您重新手动刷新页面！");
+                            //alert("目前已有属性："+ret); 
+                        }
+                        else{
+                            //alert("属性输入为空，请添加属性值");
+                            alert(ret[0].toString());
+                            
+                        };
+
+                        
+                        //alert("属性添加成功11");
+                        
+                        //$("#(attrResultArray[i].split(",")[0])").text(属性添加成功);   
+                        //$('#Sportcontent').text(obj_content);  
+                       
+                        //alert(attrResultArray[0].split(",")[1]);
+                        //obj_name=attrResultArray[0].split(",")[1];
+
+                        //alert(AdResultArray)
+                        //obj_content=attrResultArray[0];
+                    }); 
+
+                    //alert("v_staffattr3");
+                }
+                function checksport(){ 
+                    var v_sportname = document.getElementById('Sportname');
+                    var v_sportcontent = document.getElementById('Sportcontent'); 
+                    var v_sportstarttime = document.getElementById('sportstarttime');
+                    var v_sportendtime = document.getElementById('sportendtime');
+
+                    
+                    //alert(v_sportcontent.value);
+                    if(v_sportname.value.length==0){    
+                        alert('活动标题输入为空！重新输入。');
+                        v_sportname.focus();
+                        return false;
+                    }
+                    if(v_sportname.value=="活动标题"){    
+                        alert('活动标题输入为空！重新输入。');
+                        v_sportname.focus();
+                        return false;
+                    }
+                    if(v_sportcontent.value.length==0){    
+                        alert('活动内容输入为空！重新输入。');
+                        v_sportcontent.focus();
+                        return false;
+                    }
+                    if(v_sportcontent.value=="活动内容"){    
+                        alert('活动内容输入为空！重新输入。');
+                        v_sportcontent.focus();
+                        return false;
+                    }
+                    if(v_sportcontent.value=="活动内容"){    
+                        alert('活动内容输入为空！重新输入。');
+                        v_sportcontent.focus();
+                        return false;
+                    }
+                    if(v_sportstarttime.value=="开始时间"){    
+                        alert('活动开始时间输入为空！重新输入。');
+                        v_sportstarttime.focus();
+                        return false;
+                    }
+                    if(v_sportendtime.value=="结束时间"){    
+                        alert('活动结束时间输入为空！重新输入。');
+                        v_sportendtime.focus();
+                        return false;
+                    }
+
+                    return true;
+                }
+            </script>
+        
+</body>
+</html>

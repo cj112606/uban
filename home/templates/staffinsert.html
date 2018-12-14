@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>新增员工</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static "css/BackGroundImgCarousel.css" %}">
+    <style> 
+        body{   
+                background:url("{% static "img/bgstaffinfo.jpg" %}"); 
+                 background-color:#b0c4de;  
+    </style> 
+</head>
+<body>
+    <div class="container " style="color:#FFFFF0">  
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+        <div class="row">                  
+            <div class="col-xs-12 col-md-12 text-center">
+                <form id="form_data_search" action="/instaffinsert/" method="post">
+                    {% csrf_token %}    
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-6 col-md-8 text-center">
+                            <div class="form-group">
+                                <input  class="form-control required" type="text" id="staffname"  placeholder="姓名" name="staffname" autofocus="autofocus" maxlength="20" />
+                            </div>
+                        </div>
+                         <div class="col-xs-6 col-md-2 text-center">
+                            <select class="form-control" name="sexcheck" id="sexcheck">
+                                <option >请选择性别</option>
+                                <option value="男">男</option>
+                                <option value="女">女</option> 
+                            </select>
+                         </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-4 col-md-4 text-center">
+                            <div class="form-group">
+                                <select class="form-control" name="unitcheck" id="unitcheck">
+                                <option >请选择单位</option>
+                                {% for unit in unitlists %}  
+                                <option value="{{unit.0 }}">{{unit.0}}</option>
+                                {% endfor %} 
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4 text-center">
+                            <select class="form-control" name="deptcheck" id="deptcheck">
+                                 <option >请选择部门</option>
+                                {% for deptment  in deptmentlists %}   
+                                <option value="{{deptment.deptmentnumber }}">
+                                    {{deptment.deptmentname}}
+                                </option>
+                                {% endfor %} 
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-4 text-center">
+                             <input  class="form-control required" type="text" id="addr"  placeholder="办公地点" name="addr" autofocus="autofocus" maxlength="100" />
+                         </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-6 col-md-6 text-center">
+                            <div class="form-group">
+                                <input  class="form-control required" type="text" id="idcard"  placeholder="身份证号码" name="idcard" autofocus="autofocus" maxlength="18" />
+                            </div>
+                        </div>
+                         <div class="col-xs-6 col-md-6 text-center">
+                            <div class="form-group">
+                                <input  class="form-control required" type="text" id="phone"  placeholder="电话" name="phone" autofocus="autofocus" maxlength="11" />
+                            </div>
+                         </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-6 col-md-6 text-center">
+                            <div class="form-group">
+                                <input  class="form-control required" type="text" id="Email"  placeholder="邮箱" name="Email" autofocus="autofocus" maxlength="150" />
+                            </div>
+                        </div>
+                         <div class="col-xs-6 col-md-6 text-center">
+                            <div class="form-group">
+                                <input  class="form-control required" type="text" id="oaccount"  placeholder="OA账号" name="oaccount" autofocus="autofocus" maxlength="11" />
+                            </div>
+                         </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-6 col-md-8 text-center">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default" onclick="return checkright()">提交</button>
+                            </div>
+                        </div>
+                         <div class="col-xs-6 col-md-2 text-center">
+                            <div class="form-group">
+                                 <a href="/staffinfoadmin/"> 返回</a>
+                            </div>
+                         </div>
+                    </div> 
+                    <script type="text/javascript"> 
+                    function checkright(){
+                        //alert("v_idcard");
+                        //alert(idcard.value);
+                        
+                        var v_name = document.getElementById('staffname');
+                        var v_sex = document.getElementById('sexcheck'); 
+                        var v_unitcheck = document.getElementById('unitcheck');
+                        var v_deptcheck = document.getElementById('deptcheck'); 
+                        var v_addr = document.getElementById('addr');
+                        var v_idcard = document.getElementById('idcard');
+                        var v_email = document.getElementById('Email');
+                        var v_phone = document.getElementById('phone'); 
+                        var v_oa = document.getElementById('oaccount'); 
+
+                        if(v_name.value.length==0){    
+                            alert('姓名不能为空');
+                            v_name.focus();
+                            return false;
+                        }
+
+                        if(v_sex.value == '请选择性别'){    
+                            alert('请选择性别');
+                            v_sex.focus();
+                            return false;
+                        }
+
+                         if(v_unitcheck.value == '请选择单位'){    
+                            alert('请选择单位');
+                            v_unitcheck.focus();
+                            return false;
+                        }
+                        if(v_deptcheck.value == '请选择部门'){    
+                            alert('请选择部门');
+                            v_deptcheck.focus();
+                            return false;
+                        }
+                        if(v_addr.value.length==0){    
+                            alert('办公地点输入为空！无法检测。');
+                            addr.focus();
+                            return false;
+                        }
+                        if(v_idcard.value.length==0){    
+                            alert('身份证号码输入为空！无法检测。');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        var IDcard =v_idcard.value
+                         // 1 "验证通过!", 0 //校验不通过
+                        var format = /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/;
+                        //号码规则校验
+                        if(!format.test(IDcard)){
+                            alert('身份证校验码不合规，重新输入');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        //区位码校验
+                        //出生年月日校验   前正则限制起始年份为1900;
+                        var year = IDcard.substr(6,4),//身份证年
+                            month = IDcard.substr(10,2),//身份证月
+                            date = IDcard.substr(12,2),//身份证日
+                            time = Date.parse(month+'-'+date+'-'+year),//身份证日期时间戳date
+                            now_time = Date.parse(new Date()),//当前时间戳
+                            dates = (new Date(year,month,0)).getDate();//身份证当月天数
+                        if(time>now_time||date>dates){
+                            alert('身份证校验码不合规，重新输入');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        //校验码判断
+                        var c = new Array(7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2);   //系数
+                        var b = new Array('1','0','X','9','8','7','6','5','4','3','2');  //校验码对照表
+                        var id_array = IDcard.split("");
+                        var sum = 0;
+                        for(var k=0;k<17;k++){
+                            sum+=parseInt(id_array[k])*parseInt(c[k]);
+                        }
+                        if(id_array[17].toUpperCase() != b[sum%11].toUpperCase()){
+                            alert('身份证校验码不合规，重新输入');
+                            v_idcard.focus();
+                            return false;
+
+                        }
+                        //440981198902051946
+
+                        if(IDcard.substr(16,1)%2 == 1 && v_sex.value !='男'){
+                            alert('性别与身份证号码有误');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        if(IDcard.substr(16,1)%2 == 0 && v_sex.value !='女'){
+                            alert('性别与身份证号码有误');
+                            v_idcard.focus();
+                            return false;
+                        }
+                        if(v_email.value.length==0){    
+                            alert('邮箱输入为空！');
+                            v_email.focus();
+                            return false;
+                        }  
+                        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+                    　　　if(!reg.test(v_email.value)){ //正则验证不通过，格式不对
+                    　　　　alert("请输入正确的邮箱！!");
+                        v_email.focus();
+                    　　　　return false;
+                    　　　}
+                        if(v_phone.value.length==0){    
+                            alert('电话输入为空！');
+                            v_phone.focus();
+                            return false;
+                        }
+                        var phone = v_phone.value;
+                        if(!(/^1[345789]\d{9}$/.test(phone))){
+                            alert('请输入正确的手机号！');
+                            v_phone.focus();
+                            return false;
+                        }
+                        if(v_oa.value.length==0){    
+                            alert('OA账户输入为空！无法检测。');
+                            oa.focus();
+                            return false;
+                        } 
+
+                    }
+                    </script>
+
+
+
+
+
+
+                </form> 
+                
+            </div> 
+        </div> 
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>活动名字</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static "css/BackGroundImgCarousel.css" %}">
+    <style> 
+        body{
+                background-color:#b0c4de;
+                background-image:url("../static/img/bgstaffinfo.jpg");
+                 
+        }
+    </style>  
+</head>
+<body>
+    <div class="container " style="color:#FFFFF0"> 
+        {% for staffinfo in staffinfoLists %} 
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+        <div class="row" >                  
+            <div class="col-xs-12 col-md-12 text-center" >  
+                <div class="row">
+                    <div class="col-xs-12 col-md-3 text-center"></div> 
+                    <div class="col-xs-12 col-md-6 text-center"><p style="font-size:20px">个人信息 </p>
+                    </div>
+                    <div class="col-xs-12 col-md-3 text-center"><p><a href="/logout/">退出</a> </p>
+                    </div> 
+                    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="90%" color=#987cb9 SIZE=3>
+                    <div class="col-xs-12 col-md-12 text-center"> 
+                        <p><b>{{staffinfo.staffname}}({{staffinfo.staffsex}})</b></p>                        
+                        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="90%" color=#987cb9 SIZE=3>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-12 text-center">
+                    <div class="col-xs-4 col-md-4 text-center">单位名称：{{staffinfo.staffunit}}</div>
+                    <div class="col-xs-4 col-md-4 text-center">部门名称：{{staffinfo.staffdept}}</div>
+                    <div class="col-xs-4 col-md-4 text-center">办公地点：{{staffinfo.staffworkplace}}</div>
+                    <div class="row"></div>
+                    <div class="checkbox"></div> 
+                    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="90%" color=#987cb9 SIZE=3>
+                </div> 
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-4 col-md-4 text-center">身份证：{{staffinfo.staffidcard}}</div>
+                        <div class="col-xs-4 col-md-4 text-center">手机号：{{staffinfo.staffphone}}</div>
+                        <div class="col-xs-4 col-md-4 text-center">OA账号：{{staffinfo.staffoaccount}}</div>
+                        <div class="row"></div>
+                        <div class="checkbox"></div> 
+                        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="90%" color=#987cb9 SIZE=3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 text-center">
+                        <div class="col-xs-6 col-md-4 text-center">
+                            邮箱：{{staffinfo.staffemail}}
+                        </div>
+                         <div class="col-xs-6 col-md-4 text-center">
+                        {% if staffinfo.staffclass == '1' %}
+                                <a href="/incheckEmail/" style="color:#FFFF00"> 请验证邮箱</a>
+                        {% else %}
+                            <a href="/staffinfo/"><button type="button" class="btn btn-warning" disabled="disabled">修改个人信息(暂时不能修改)</button></a>
+                        {% endif %} 
+                        </div> 
+                    </div>
+                </div>               
+            </div> 
+        </div>
+        <div class="row"></div>
+        <div class="checkbox"></div>
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+        <div class="row">                  
+            <div class="col-xs-12 col-md-12 text-center">
+                <b><p id="Sportcontent" >参加的活动</p></b> 
+                <p id="Sportcontent" >
+                    <table class="table" style="table-layout:fixed;">
+                        <thead>
+                        <tr style="color:#FFFAF0;">
+                            <td >活动标题</td>
+                            <td >活动内容</td>
+                            <td >参加状态</td>
+                            <td >更新时间</td>
+                        </tr>
+                        </thead>
+                        {% for staff_sport in staff_sport_lists %}
+                        <tbody>
+                        <tr style="color:#7FFFAA;">
+                           
+                            <td style="overflow: hidden;text-overflow:ellipsis;  white-space: nowrap; ">
+                            {{staff_sport.0}}</td>
+                            <td style="overflow: hidden;text-overflow:ellipsis;  white-space: nowrap; " >    <a style="color:#D2691E" href="/injoinsport/{{staff_sport.2}}/"> 
+                                    {{staff_sport.1}}
+                                </a>
+                            </td>
+                            <td>
+                                {% if staff_sport.4 == '待确认参加活动' %}
+                                    <a style="color:#7CFC00" href="/insportconfirm/{{staff_sport.2}}/">{{staff_sport.4}}
+                                    </a>
+                                {% else %}   
+                                    <p style="color:#FF0000" >已{{staff_sport.4}}</p>
+                                {% endif %}
+                            </td>
+                            <td>{{staff_sport.3|date:"Y-m-d"}}</td>
+                        </tr>                         
+                        </tbody>
+                        {% endfor %} 
+                    </table>
+                </p> 
+            </div> 
+        </div>
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+        
+        <div class="row">                  
+            <div class="col-xs-12 col-md-12 text-center">
+                <form id="form_data_search" action="/instaffsearchsports/" method="get">
+                    <div class="col-xs-12 col-md-8 text-center"> 
+                        <input type="text" class="form-control" placeholder="搜索某个活动" name="q">
+                    </div>
+                    <div class="col-xs-12 col-md-2 text-center">
+                        <button type="submit" class="btn btn-default">搜索活动</button>
+                    </div>
+                </form> 
+                <div class="row"></div>
+                <div class="checkbox"></div>
+                <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>                
+                <div class="col-xs-12 col-md-12 text-center">
+                <table class="table"  style="table-layout:fixed;">
+                    <thead>
+                    <tr style="color:#FFFAF0;">
+                        <td>活动标题</td>
+                        <td>活动内容</td>
+                        <td>发布人</td>
+                        <td>开始时间</td>
+                        <td>结束时间</td>
+                    </tr>
+                    </thead>
+                    {% for sport in sportLists %}
+                    <tbody>
+                    <tr style="color:#7FFFAA;">
+                        <td style="overflow: hidden;text-overflow:ellipsis;  white-space: nowrap; ">{{sport.sportname}}</td>
+                        <td style="overflow: hidden;text-overflow:ellipsis;  white-space: nowrap; ">
+                            <a style="color:#FFFF00" href="/injoinsport/{{sport.sportlink}}/"> 
+                               {{sport.sportcontent}} 
+                            </a>
+                        </td>
+                        <td>{{sport.sportauthor}}</td>
+                        <td>{{sport.sportstartdate|date:"Y-m-d"}}</td>
+                        <td>{{sport.sportenddate|date:"Y-m-d"}}</td>
+                    </tr>                     
+                    </tbody>
+                    {% endfor %} 
+                </table>
+                </div>
+            </div> 
+        </div>
+         {% endfor %} 
+
+
+        <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" color=#987cb9 SIZE=3>
+        
+    </div>
+</body>
+</html>
